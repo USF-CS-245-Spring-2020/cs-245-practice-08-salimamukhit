@@ -1,5 +1,5 @@
 public class BST<S> {
-    class Node {
+    class Node { // initializing class Node
         private Comparable data;
         private Node leftChild;
         private Node rightChild;
@@ -34,10 +34,10 @@ public class BST<S> {
             return false;
         } else if (item.compareTo(node.data) == 0) { // if root is the item we are looking for
             return true;
-        } else if (item.compareTo(node.data) < 0) { // if it is smaller we shift to the left
-            return recursiveFind(node.leftChild, item);
-        } else { // if it is bigger we shift to the right
+        } else if (item.compareTo(node.data) > 0) { // if it is bigger we shift to the right
             return recursiveFind(node.rightChild, item);
+        } else { // if it is smaller we shift to the left
+            return recursiveFind(node.leftChild, item);
         }
     }
 
@@ -45,11 +45,11 @@ public class BST<S> {
     private Node recursiveInsert(Node node, Comparable item) {
         if (node == null) { // if root is empty we initialize it
             return new Node(item);
-        } else if (item.compareTo(node.data) < 0) { // if it is smaller we shift to the right
-            node.leftChild = recursiveInsert(node.leftChild, item);
+        } else if (item.compareTo(node.data) > 0) { // if it is bigger we shift to the right
+            node.leftChild = recursiveInsert(node.rightChild, item);
             return node;
-        } else { // if it is bigger we shift to the right
-            node.rightChild = recursiveInsert(node.rightChild, item);
+        } else { // if it is smaller we shift to the left
+            node.rightChild = recursiveInsert(node.leftChild, item);
             return node;
         }
     }
@@ -77,7 +77,7 @@ public class BST<S> {
                     node.data = node.rightChild.data;
                     node.rightChild = node.rightChild.rightChild;
                 } else {
-                    node.data = removeSmallest(node.rightChild);
+                    node.data = removeLeftest(node.rightChild);
                 }
                 return node;
             }
@@ -91,13 +91,13 @@ public class BST<S> {
     }
 
 
-    Comparable removeSmallest(Node node) { // recursively searches for the smallest value in BST
-        if(node.leftChild.leftChild == null) {
-            Comparable smallest = node.leftChild.data;
+    Comparable removeLeftest(Node node) { // recursively searches for the leftest node
+        if (node.leftChild.leftChild == null) {
+            Comparable leftest = node.leftChild.data;
             node.leftChild = node.leftChild.rightChild;
-            return smallest;
+            return leftest;
         } else {
-            return removeSmallest(node.leftChild);
+            return removeLeftest(node.leftChild);
         }
     }
 }
